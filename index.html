@@ -52,7 +52,7 @@ a{color:#f5c86b}
   <div class="hero-inner">
     <p class="kicker">AI DRAMA GUIDE</p>
     <h1>AI劇場</h1>
-    <p>最熱門的 AI 短劇都在這裡。搜一下、選個分類，點卡片就能看。</p>
+    <p>最熱門的 AI 短劇都在這裡。搜一下、選個分類，點卡片，到 YouTube 看。</p>
   </div>
 </header>
 <div class="bar">
@@ -123,7 +123,7 @@ function render(){
   var cont=document.getElementById("continue");
   if(last){
     var ld=null;DRAMAS.forEach(function(d){if(d.id===last)ld=d});
-    if(ld){cont.style.display="block";cont.innerHTML="繼續看：<b>"+esc(ld.t)+"</b> <button class=\"btn\" onclick=\"openDrama('"+ld.id+"')\">繼續播放</button>";}
+    if(ld){cont.style.display="block";cont.innerHTML="繼續看：<b>"+esc(ld.t)+"</b> <a class=\"btn\" href=\"https://www.youtube.com/watch?v="+ld.id+"\" target=\"_blank\" rel=\"noopener\">到 YouTube 看</a>";}
     else cont.style.display="none";
   } else cont.style.display="none";
   document.getElementById("grid").innerHTML=list.map(function(d){
@@ -138,7 +138,7 @@ function openDrama(id){
   var watched=getWatched();var seen=watched.indexOf(id)>=0;
   var el=document.getElementById("detail");
   el.style.display="block";
-  el.innerHTML='<h2>'+esc(d.t)+'</h2><p><span class="badge">'+d.c+'</span>'+esc(d.ch)+'｜'+d.v+' 觀看｜片長 '+d.d+' '+(d.eps?('｜共 '+d.eps+' 集（合集版，一支影片一次看完）'):'｜合集版')+'</p><p>'+esc(d.desc)+'</p><div class="player"><iframe src="https://www.youtube.com/embed/'+d.id+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><p class="note">這是合集版影片，集數以影片內的章節為準；想分集追的話，到 YouTube 頻道找單集。</p><button class="btn" onclick="toggleSeen(\''+d.id+'\')">'+(seen?'取消看過標記':'標記為看過')+'</button><a class="btn ghost" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">到 YouTube 看</a> <button class="btn ghost" onclick="document.getElementById(\'detail\').style.display=\'none\'">收起</button>';
+  el.innerHTML='<h2>'+esc(d.t)+'</h2><p><span class="badge">'+d.c+'</span>'+esc(d.ch)+'｜'+d.v+' 觀看｜片長 '+d.d+' '+(d.eps?('｜共 '+d.eps+' 集（合集版，一支影片一次看完）'):'｜合集版')+'</p><p>'+esc(d.desc)+'</p><a class="btn" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">▶ 到 YouTube 看</a><p class="note">點上面按鈕會跳到 YouTube App 或網頁播放；這是合集版影片，集數以影片內的章節為準。</p><button class="btn ghost" onclick="toggleSeen(\''+d.id+'\')">'+(seen?'取消看過標記':'標記為看過')+'</button> <button class="btn ghost" onclick="document.getElementById(\'detail\').style.display=\'none\'">收起</button>';
   el.scrollIntoView({behavior:"smooth"});
   render();
 }
