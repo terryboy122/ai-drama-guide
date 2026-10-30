@@ -42,8 +42,8 @@ export async function onRequestPost(context) {
           )
             .bind(tradeNo)
             .first();
-          if (row && row.period_type === 'Y') cycleText = '之後每年會自動扣款 390 元。';
-          else if (row) cycleText = '之後每月會自動扣款 39 元。';
+          if (row && row.period_type === 'Y') cycleText = '之後每年會自動扣款 NT$390。';
+          else if (row) cycleText = '之後每月會自動扣款 NT$39。';
         }
       } catch (e) {}
       return page(

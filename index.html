@@ -279,11 +279,11 @@ a{color:#f5c86b}
 </section>
 <section class="board" id="subscribe">
 <h2>贊助訂閱</h2>
-<p>每月 39 元或每年 390 元，支持本站繼續蒐集整理熱門 AI 劇。</p>
+<p>每月 NT$39 或每年 NT$390，支持本站繼續蒐集整理熱門 AI 劇。</p>
 <p>本訂閱為純支持，站上內容維持免費公開，訂閱者目前沒有專屬內容，日後若有新增會再公告。</p>
 <p>付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；隨時可取消，取消後下個週期起不再扣款。取消方式：下方表單輸入訂單編號與信用卡末四碼即可自助取消（取消後無法恢復，想繼續支持需重新訂閱），或透過<a href="#board" style="color:#f5c86b">留言板</a>聯絡站主。</p>
-<div style="margin-bottom:12px"><label for="plan-select">訂閱方案</label><select id="plan-select"><option value="monthly">每月 39 元</option><option value="yearly">每年 390 元（省兩個月）</option></select></div>
-<p><button class="btn" id="subscribe-btn" type="button" disabled>即將開放（綠界帳號設定中）</button></p>
+<div style="margin-bottom:12px"><label for="plan-select">訂閱方案</label><select id="plan-select" style="font-size:18px"><option value="monthly">每月 NT$39</option><option value="yearly">每年 NT$390（省兩個月）</option></select></div>
+<p><button class="btn" id="subscribe-btn" type="button" disabled>即將開放</button></p>
 <p class="note">正式開放後，按下按鈕會前往綠界刷卡授權頁完成第一期付款，之後按你選擇的週期自動扣款。</p>
 <script>
 (function(){
@@ -295,7 +295,7 @@ location.href='/api/subscribe?plan='+encodeURIComponent(plan);
 })();
 </script>
 <p><b>常見問題：</b></p>
-<p><b>是不是自動續扣？</b>是，按你選擇的週期自動扣款（每月 39 元或每年 390 元），直到你取消為止。</p>
+<p><b>是不是自動續扣？</b>是，按你選擇的週期自動扣款（每月 NT$39 或每年 NT$390），直到你取消為止。</p>
 <p><b>怎麼取消？</b>下方表單輸入訂單編號與信用卡末四碼自助取消，或透過留言板聯絡站主；取消後下個週期起不再扣款，取消後無法恢復、需重新訂閱。</p>
 <p><b>扣款失敗會怎樣？</b>綠界會自動重試；若連續多次失敗，綠界會自動終止該筆定期扣款，到時需重新訂閱。</p>
 <p><b>需要收據怎麼辦？</b>請透過留言板聯絡站主。</p>
@@ -671,8 +671,8 @@ document.getElementById("board-form").addEventListener("submit",async function(e
 <div id="sub-popup">
 <button id="sub-popup-x" aria-label="關閉">×</button>
 <h3>喜歡 AI劇場嗎？</h3>
-<p>每月 39 元支持本站繼續整理熱門 AI 劇，內容維持免費公開。</p>
-<button class="btn" id="sub-popup-go" type="button">每月 39 元支持</button>
+<p>每月 NT$39 支持本站繼續整理熱門 AI 劇，內容維持免費公開。</p>
+<button class="btn" id="sub-popup-go" type="button">每月 NT$39 支持</button>
 <button class="link-btn" id="sub-popup-subscribed" type="button">我已訂閱，不再顯示</button>
 <button class="link-btn" id="sub-popup-later" type="button">先逛逛</button>
 </div>
