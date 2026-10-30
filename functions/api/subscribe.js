@@ -4,8 +4,10 @@
 // page (GET exists so the flow can be tested directly in a browser).
 // The public subscribe button stays disabled until production keys
 // replace the stage credentials, so no visitor can reach this early.
-// Stage currently uses the non-OTP test merchant (2000214) so the
-// simulated checkout skips the SMS-verification step.
+// Stage uses the general test merchant (2000132): its published key
+// pair validates on current Stage, unlike the older 2000214 pair
+// (CheckMacValue error on 2026-10-30). SMS-step issues are bypassed
+// via the vendor-stage backend simulate-payment function.
 import { checkMacValue, escHtml, SUBSCRIPTIONS_DDL } from './ecpay/_common.js';
 
 const SITE = 'https://ai-drama-guide.pages.dev';
