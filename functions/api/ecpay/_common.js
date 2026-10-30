@@ -57,4 +57,9 @@ export function escHtml(s) {
 }
 
 export const SUBSCRIPTIONS_DDL =
-  'CREATE TABLE IF NOT EXISTS subscriptions (merchant_trade_no TEXT PRIMARY KEY, status TEXT NOT NULL DEFAULT \'pending\', amount INTEGER NOT NULL DEFAULT 39, period_type TEXT DEFAULT \'M\', frequency INTEGER DEFAULT 1, exec_times INTEGER DEFAULT 999, ecpay_trade_no TEXT, rtn_code TEXT, total_success_times INTEGER DEFAULT 0, created_at INTEGER, updated_at INTEGER, last_period_at INTEGER, last_period_rtn TEXT)';
+  'CREATE TABLE IF NOT EXISTS subscriptions (merchant_trade_no TEXT PRIMARY KEY, status TEXT NOT NULL DEFAULT \'pending\', amount INTEGER NOT NULL DEFAULT 39, period_type TEXT DEFAULT \'M\', frequency INTEGER DEFAULT 1, exec_times INTEGER DEFAULT 999, ecpay_trade_no TEXT, rtn_code TEXT, total_success_times INTEGER DEFAULT 0, card4 TEXT, created_at INTEGER, updated_at INTEGER, last_period_at INTEGER, last_period_rtn TEXT)';
+
+// One row per caller IP: at most 5 well-formed cancel attempts per 10
+// minutes, so a 20-char order number cannot be brute-forced.
+export const CANCEL_RATE_DDL =
+  'CREATE TABLE IF NOT EXISTS cancel_rate (ip TEXT PRIMARY KEY, cnt INTEGER DEFAULT 0, win INTEGER)';

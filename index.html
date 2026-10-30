@@ -281,9 +281,36 @@ a{color:#f5c86b}
 <h2>贊助訂閱</h2>
 <p>每月 39 元，支持本站繼續蒐集整理熱門 AI 劇。</p>
 <p>本訂閱為純支持，站上內容維持免費公開，訂閱者目前沒有專屬內容，日後若有新增會再公告。</p>
-<p>付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；隨時可取消，取消後下個月起不再扣款。取消時請透過<a href="#board" style="color:#f5c86b">留言板</a>告知訂單編號，站主會在綠界後台取消。</p>
+<p>付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；隨時可取消，取消後下個月起不再扣款。取消方式：下方表單輸入訂單編號與信用卡末四碼即可自助取消（取消後無法恢復，想繼續支持需重新訂閱），或透過<a href="#board" style="color:#f5c86b">留言板</a>聯絡站主。</p>
 <p><button class="btn" type="button" disabled>即將開放（綠界帳號設定中）</button></p>
 <p class="note">正式開放後，按下按鈕會前往綠界刷卡授權頁完成第一期付款，之後每月自動扣款 39 元。</p>
+<form id="cancel-form" aria-label="取消訂閱表單" style="margin-top:16px">
+<div style="margin-bottom:12px"><label for="cancel-trade">訂單編號</label><input id="cancel-trade" name="tradeNo" type="text" placeholder="例如：SUB20261030……（共 20 碼）"></div>
+<div style="margin-bottom:12px"><label for="cancel-card4">信用卡末四碼</label><input id="cancel-card4" name="card4" type="text" inputmode="numeric" maxlength="4" placeholder="例如：2222"></div>
+<button id="cancel-submit" class="btn" type="submit">取消這筆訂閱</button>
+<p class="note" id="cancel-status"></p>
+<p class="note">訂單編號在付款成功頁會顯示；末四碼僅用於核對身分，不會用於其他用途。</p>
+</form>
+<script>
+(function(){
+var f=document.getElementById('cancel-form');if(!f)return;
+f.addEventListener('submit',async function(e){
+e.preventDefault();
+var st=document.getElementById('cancel-status');
+var btn=document.getElementById('cancel-submit');
+var trade=document.getElementById('cancel-trade').value.trim().toUpperCase();
+var card4=document.getElementById('cancel-card4').value.trim();
+if(!/^SUB[0-9A-Z]{17}$/.test(trade)||!/^\d{4}$/.test(card4)){st.textContent='訂單編號或信用卡末四碼格式不正確，請再檢查一次。';return;}
+if(!confirm('確定要取消這筆訂閱嗎？取消後無法恢復，下個月起不再扣款；若想繼續支持，需重新訂閱。'))return;
+btn.disabled=true;st.textContent='處理中…';
+try{
+var r=await fetch('/api/cancel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tradeNo:trade,card4:card4})});
+var d=await r.json();st.textContent=d.message||'處理完成。';
+}catch(err){st.textContent='取消失敗，請稍後再試或透過留言板聯絡站主。';}
+btn.disabled=false;
+});
+})();
+</script>
 </section>
 <section class="board" id="board">
 <h2>留言板</h2>
@@ -313,7 +340,7 @@ a{color:#f5c86b}
 <p><b>利用期間、地區、對象及方式：</b>自留言日起保存 1 年，期滿刪除；僅供站主於密碼保護的管理後台查看回覆，不公開顯示、不提供給第三方；資料儲存於 Cloudflare 提供的資料庫服務。</p>
 <p><b>當事人權利：</b>你可以依個人資料保護法第 3 條，向站主請求查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除，聯絡方式見版權與下架政策。</p>
 <p><b>不提供之影響：</b>未填寫稱呼或留言內容、或未勾選同意，將無法送出留言。</p>
-<p><b>訂閱付款：</b>訂閱付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；本站僅記錄訂單編號、扣款狀態與次數，供對帳與取消處理。</p>
+<p><b>訂閱付款：</b>訂閱付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；本站僅記錄訂單編號、卡號末四碼（僅供核對取消身分）、扣款狀態與次數，供對帳與取消處理。</p>
 </section>
 </main>
 <img src="https://site-stats.terryboy122.workers.dev/t?site=ai-drama-guide" style="display:none" alt="">

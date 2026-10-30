@@ -62,7 +62,7 @@ export async function onRequest(context) {
     Frequency: '1',
     ExecTimes: '999',
     PeriodReturnURL: SITE + '/api/ecpay/period',
-    NeedExtraPaidInfo: 'N',
+    NeedExtraPaidInfo: 'Y',
     CustomField1: 'ai-drama-guide',
   };
   params.CheckMacValue = await checkMacValue(params, hk, hiv);

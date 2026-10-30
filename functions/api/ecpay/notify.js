@@ -17,11 +17,17 @@ export async function onRequestPost(context) {
     }
     if (env.DB) {
       await env.DB.prepare(SUBSCRIPTIONS_DDL).run();
+      // Older rows were created before card4 existed; add it once.
+      try {
+        await env.DB.prepare('ALTER TABLE subscriptions ADD COLUMN card4 TEXT').run();
+      } catch (e) {
+        // Column already exists; ignore.
+      }
       if (params.RtnCode === '1') {
         await env.DB.prepare(
-          'UPDATE subscriptions SET status=?, ecpay_trade_no=?, rtn_code=?, updated_at=? WHERE merchant_trade_no=?'
+          'UPDATE subscriptions SET status=?, ecpay_trade_no=?, rtn_code=?, card4=?, updated_at=? WHERE merchant_trade_no=?'
         )
-          .bind('active', params.TradeNo || '', '1', Date.now(), params.MerchantTradeNo)
+          .bind('active', params.TradeNo || '', '1', params.Card4No || '', Date.now(), params.MerchantTradeNo)
           .run();
       } else {
         await env.DB.prepare(
