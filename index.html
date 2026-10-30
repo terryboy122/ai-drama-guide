@@ -59,8 +59,14 @@ a{color:#f5c86b}
   <div class="bar-inner">
     <input id="q" type="search" placeholder="搜劇名、頻道，例如：詭王、萌寶">
     <select id="sort" aria-label="排序">
-      <option value="hot">最熱門</option>
+      <option value="hot">最熱門（總觀看）</option>
+      <option value="vpd">人氣增速（日均觀看）</option>
       <option value="eps">集數最多</option>
+    </select>
+    <select id="month" aria-label="月份">
+      <option value="">全部月份</option>
+      <option value="2026-10">2026年10月上架</option>
+      <option value="2026-08">2026年8月上架</option>
     </select>
   </div>
 </div>
@@ -76,24 +82,24 @@ a{color:#f5c86b}
 <footer class="footer"><p>AI劇場｜最熱門 AI 短劇，一次找到想看的劇</p></footer>
 <script>
 var DRAMAS=[
-{id:"K0rfecnCz7s",t:"男友把我從90斤餵到170斤",c:"都市",ch:"歲歲覺醒劇場ShortTV",v:"55.5 萬",vn:555000,d:"1:05:45",eps:0,desc:"以為他喜歡胖胖的自己，卻撞破他為送青梅上位而算計她。"},
-{id:"ITV2Oz6VzoA",t:"我今年18，女兒19",c:"家庭",ch:"KK爱看",v:"33.9 萬",vn:339000,d:"2:42:13",eps:156,desc:"18歲少年被19歲女孩喊爸，得知真相後全家聯手改寫命運。"},
-{id:"BEEJ7n_u-Ak",t:"全球詭異降臨，我的老爹是詭王",c:"玄幻",ch:"KK爱看",v:"33.3 萬",vn:333000,d:"2:06:09",eps:116,desc:"高階詭異見她就怕，她的真實身分究竟是什麼。"},
-{id:"fCpi4zFHpN8",t:"我靠現代美食在古代發家致富",c:"古裝",ch:"红果短剧圈",v:"26.5 萬",vn:265000,d:"2:05:45",eps:0,desc:"現代廚神穿越古代，麻辣燙饞哭古人。"},
-{id:"pJp6Lf1QG5I",t:"重生六零：帶著姐妹進山躲饑荒",c:"重生",ch:"KK爱看",v:"13 萬",vn:130000,d:"1:15:20",eps:98,desc:"重生攜空間進山求生，帶姐妹逆襲成全村依靠。"},
-{id:"C5n32-Ca28k",t:"村長，這媳婦可是你讓我娶的",c:"古裝",ch:"KK爱看",v:"12.6 萬",vn:126000,d:"1:12:42",eps:60,desc:"重生歸來先娶村長安排的媳婦，轉眼讓仇人自食惡果。"},
-{id:"slrv-T3lUb4",t:"穿成惡毒前妻，我靠鹵肉爆賺",c:"古裝",ch:"KK爱看",v:"11.3 萬",vn:113000,d:"10:22:50",eps:639,desc:"惡毒前妻主動和離後，靠一鍋鹵肉逆襲翻身，全劇完結篇。"},
-{id:"Z4RkXnhzv98",t:"票是舊的帳是真的",c:"重生",ch:"KK爱看",v:"6.3 萬",vn:63000,d:"1:11:51",eps:94,desc:"中獎八千萬卻淨身出戶？她早留了一手。"},
-{id:"cIlMh2po-Rs",t:"萌寶降世：錦鯉小福星旺爆帥府",c:"家庭",ch:"KK爱看",v:"5 萬",vn:50000,d:"2:07:22",eps:138,desc:"被全家嫌棄的小奶團，竟讓傅家所有人重拾笑容。"},
-{id:"N7gfEv2Y3wI",t:"那妖魔是我老婆！",c:"玄幻",ch:"KK爱看",v:"2.8 萬",vn:28000,d:"2:00:48",eps:153,desc:"我死後成妖潛入陳家，竟發現老婆等了我三千年。"},
-{id:"2ZotpmR8NSU",t:"鎮國公她手握兵權回京了",c:"古裝",ch:"KK爱看",v:"2.7 萬",vn:27000,d:"4:09:20",eps:279,desc:"戰功赫赫的長姐回京，鳩占鵲巢的人要付出代價。"},
-{id:"HHjgd8DoGPk",t:"京婚越界，宗少請自重",c:"豪門",ch:"KK爱看",v:"2.7 萬",vn:27000,d:"2:19:40",eps:130,desc:"聯姻名單突生變數，他偏偏選中最受欺負的她。"},
-{id:"Yel4mm_wfsg",t:"6塊6到帳那天，我退了6萬6",c:"重生",ch:"KK爱看",v:"2.4 萬",vn:24000,d:"2:28:42",eps:104,desc:"6塊6隨禮換來淨身出戶，他的豪門美夢徹底碎了。"},
-{id:"KxnTfdiXk1M",t:"女主讓讓，我的小青梅來接我了",c:"都市",ch:"KK爱看",v:"2 萬",vn:20000,d:"2:20:54",eps:101,desc:"穿成冤種男配後，他拒絕當舔狗，聯手青梅逆襲翻盤。"},
-{id:"W6yz98VEFFo",t:"遲恩",c:"玄幻",ch:"盛世短剧",v:"43.2 萬",vn:432000,d:"3:24:40",eps:0,desc:"高清完結合集：穿越、修仙、搞笑、逆襲。"},
-{id:"v6d4JHScPaM",t:"被豪門趕出家門，五個哥哥寵成掌上明珠",c:"豪門",ch:"砂糖劇滿屋",v:"39.4 萬",vn:394000,d:"1:36:05",eps:0,desc:"她被豪門趕出家門，轉身跟著「窮父母」擺攤，卻被五個哥哥寵成掌上明珠。"},
-{id:"ITgf12sw0kY",t:"妖怪聊天群",c:"玄幻",ch:"盛世短剧",v:"13.2 萬",vn:132000,d:"2:10:35",eps:0,desc:"高清完結合集：穿越、修仙、搞笑、逆襲。"},
-{id:"2Sba3iS2Tm8",t:"冷面攝政王×逃婚少女",c:"古裝",ch:"Best Potato Drama",v:"18.6 萬",vn:186000,d:"1:50:22",eps:0,desc:"冷面攝政王從不近女色，卻從懸崖下救回一名逃婚少女，還任由她抱著自己喊表哥。"}
+{id:"K0rfecnCz7s",pub:"2026-10-12",t:"男友把我從90斤餵到170斤",c:"都市",ch:"歲歲覺醒劇場ShortTV",v:"55.5 萬",vn:555000,d:"1:05:45",eps:0,desc:"以為他喜歡胖胖的自己，卻撞破他為送青梅上位而算計她。"},
+{id:"ITV2Oz6VzoA",pub:"2026-10-19",t:"我今年18，女兒19",c:"家庭",ch:"KK爱看",v:"33.9 萬",vn:339000,d:"2:42:13",eps:156,desc:"18歲少年被19歲女孩喊爸，得知真相後全家聯手改寫命運。"},
+{id:"BEEJ7n_u-Ak",pub:"2026-10-16",t:"全球詭異降臨，我的老爹是詭王",c:"玄幻",ch:"KK爱看",v:"33.3 萬",vn:333000,d:"2:06:09",eps:116,desc:"高階詭異見她就怕，她的真實身分究竟是什麼。"},
+{id:"fCpi4zFHpN8",pub:"2026-10-16",t:"我靠現代美食在古代發家致富",c:"古裝",ch:"红果短剧圈",v:"26.5 萬",vn:265000,d:"2:05:45",eps:0,desc:"現代廚神穿越古代，麻辣燙饞哭古人。"},
+{id:"pJp6Lf1QG5I",pub:"2026-10-28",t:"重生六零：帶著姐妹進山躲饑荒",c:"重生",ch:"KK爱看",v:"13 萬",vn:130000,d:"1:15:20",eps:98,desc:"重生攜空間進山求生，帶姐妹逆襲成全村依靠。"},
+{id:"C5n32-Ca28k",pub:"2026-10-20",t:"村長，這媳婦可是你讓我娶的",c:"古裝",ch:"KK爱看",v:"12.6 萬",vn:126000,d:"1:12:42",eps:60,desc:"重生歸來先娶村長安排的媳婦，轉眼讓仇人自食惡果。"},
+{id:"slrv-T3lUb4",pub:"2026-10-21",t:"穿成惡毒前妻，我靠鹵肉爆賺",c:"古裝",ch:"KK爱看",v:"11.3 萬",vn:113000,d:"10:22:50",eps:639,desc:"惡毒前妻主動和離後，靠一鍋鹵肉逆襲翻身，全劇完結篇。"},
+{id:"Z4RkXnhzv98",pub:"2026-10-20",t:"票是舊的帳是真的",c:"重生",ch:"KK爱看",v:"6.3 萬",vn:63000,d:"1:11:51",eps:94,desc:"中獎八千萬卻淨身出戶？她早留了一手。"},
+{id:"cIlMh2po-Rs",pub:"2026-10-24",t:"萌寶降世：錦鯉小福星旺爆帥府",c:"家庭",ch:"KK爱看",v:"5 萬",vn:50000,d:"2:07:22",eps:138,desc:"被全家嫌棄的小奶團，竟讓傅家所有人重拾笑容。"},
+{id:"N7gfEv2Y3wI",pub:"2026-10-27",t:"那妖魔是我老婆！",c:"玄幻",ch:"KK爱看",v:"2.8 萬",vn:28000,d:"2:00:48",eps:153,desc:"我死後成妖潛入陳家，竟發現老婆等了我三千年。"},
+{id:"2ZotpmR8NSU",pub:"2026-10-26",t:"鎮國公她手握兵權回京了",c:"古裝",ch:"KK爱看",v:"2.7 萬",vn:27000,d:"4:09:20",eps:279,desc:"戰功赫赫的長姐回京，鳩占鵲巢的人要付出代價。"},
+{id:"HHjgd8DoGPk",pub:"2026-10-28",t:"京婚越界，宗少請自重",c:"豪門",ch:"KK爱看",v:"2.7 萬",vn:27000,d:"2:19:40",eps:130,desc:"聯姻名單突生變數，他偏偏選中最受欺負的她。"},
+{id:"Yel4mm_wfsg",pub:"2026-10-26",t:"6塊6到帳那天，我退了6萬6",c:"重生",ch:"KK爱看",v:"2.4 萬",vn:24000,d:"2:28:42",eps:104,desc:"6塊6隨禮換來淨身出戶，他的豪門美夢徹底碎了。"},
+{id:"KxnTfdiXk1M",pub:"2026-10-29",t:"女主讓讓，我的小青梅來接我了",c:"都市",ch:"KK爱看",v:"2 萬",vn:20000,d:"2:20:54",eps:101,desc:"穿成冤種男配後，他拒絕當舔狗，聯手青梅逆襲翻盤。"},
+{id:"W6yz98VEFFo",pub:"2026-10-08",t:"遲恩",c:"玄幻",ch:"盛世短剧",v:"43.2 萬",vn:432000,d:"3:24:40",eps:0,desc:"高清完結合集：穿越、修仙、搞笑、逆襲。"},
+{id:"v6d4JHScPaM",pub:"2026-08-04",t:"被豪門趕出家門，五個哥哥寵成掌上明珠",c:"豪門",ch:"砂糖劇滿屋",v:"39.4 萬",vn:394000,d:"1:36:05",eps:0,desc:"她被豪門趕出家門，轉身跟著「窮父母」擺攤，卻被五個哥哥寵成掌上明珠。"},
+{id:"ITgf12sw0kY",pub:"2026-08-18",t:"妖怪聊天群",c:"玄幻",ch:"盛世短剧",v:"13.2 萬",vn:132000,d:"2:10:35",eps:0,desc:"高清完結合集：穿越、修仙、搞笑、逆襲。"},
+{id:"2Sba3iS2Tm8",pub:"2026-08-23",t:"冷面攝政王×逃婚少女",c:"古裝",ch:"Best Potato Drama",v:"18.6 萬",vn:186000,d:"1:50:22",eps:0,desc:"冷面攝政王從不近女色，卻從懸崖下救回一名逃婚少女，還任由她抱著自己喊表哥。"}
 ];
 var CATS=["全部","古裝","重生","豪門","家庭","玄幻","都市"];
 var cat="全部";
@@ -109,13 +115,17 @@ function renderChips(){
     b.addEventListener("click",function(){cat=b.dataset.c;renderChips();render();});
   });
 }
+function vpd(d){var days=Math.max(1,Math.round((Date.now()-new Date(d.pub))/86400000));return Math.round(d.vn/days)}
+function fmtVpd(n){return n>=10000?(n/10000).toFixed(1)+" 萬/天":n+" /天"}
 function render(){
   var q=(document.getElementById("q").value||"").trim();
+  var month=document.getElementById("month").value;
   var list=DRAMAS.filter(function(d){
-    return (cat==="全部"||d.c===cat)&&(!q||(d.t+d.ch+d.desc).indexOf(q)>=0);
+    return (cat==="全部"||d.c===cat)&&(!month||d.pub.indexOf(month)===0)&&(!q||(d.t+d.ch+d.desc).indexOf(q)>=0);
   });
   var sort=document.getElementById("sort").value;
   if(sort==="hot")list.sort(function(a,b){return b.vn-a.vn});
+  else if(sort==="vpd")list.sort(function(a,b){return vpd(b)-vpd(a)});
   else list.sort(function(a,b){return (b.eps||0)-(a.eps||0)});
   var watched=getWatched();
   document.getElementById("count").textContent="共 "+list.length+" 部";
@@ -128,7 +138,7 @@ function render(){
   } else cont.style.display="none";
   document.getElementById("grid").innerHTML=list.map(function(d){
     var seen=watched.indexOf(d.id)>=0;
-    return '<button class="card" onclick="openDrama(\''+d.id+'\')"><img src="'+thumb(d.id)+'" alt="" loading="lazy"><div class="card-body"><h3>'+esc(d.t)+'</h3><p><span class="badge">'+d.c+'</span>'+(d.eps?("共 "+d.eps+" 集（合集版）"):"合集版")+'｜片長 '+d.d+'</p><p>'+esc(d.desc)+'</p><p>'+esc(d.ch)+'｜'+d.v+' 觀看 '+(seen?'<span class="seen">✓ 看過</span>':'')+'</p></div></button>';
+    return '<button class="card" onclick="openDrama(\''+d.id+'\')"><img src="'+thumb(d.id)+'" alt="" loading="lazy"><div class="card-body"><h3>'+esc(d.t)+'</h3><p><span class="badge">'+d.c+'</span>'+(d.eps?("共 "+d.eps+" 集（合集版）"):"合集版")+'｜片長 '+d.d+'｜'+d.pub.slice(0,7)+'上架</p><p>'+esc(d.desc)+'</p><p>'+esc(d.ch)+'｜'+d.v+' 觀看｜日均約 '+fmtVpd(vpd(d))+' '+(seen?'<span class="seen">✓ 看過</span>':'')+'</p></div></button>';
   }).join("")||"<p>沒有找到符合的劇，換個關鍵字試試。</p>";
 }
 function openDrama(id){
@@ -138,7 +148,7 @@ function openDrama(id){
   var watched=getWatched();var seen=watched.indexOf(id)>=0;
   var el=document.getElementById("detail");
   el.style.display="block";
-  el.innerHTML='<h2>'+esc(d.t)+'</h2><p><span class="badge">'+d.c+'</span>'+esc(d.ch)+'｜'+d.v+' 觀看｜片長 '+d.d+' '+(d.eps?('｜共 '+d.eps+' 集（合集版，一支影片一次看完）'):'｜合集版')+'</p><p>'+esc(d.desc)+'</p><a class="btn" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">▶ 到 YouTube 看</a><p class="note">點上面按鈕會跳到 YouTube App 或網頁播放；這是合集版影片，集數以影片內的章節為準。</p><button class="btn ghost" onclick="toggleSeen(\''+d.id+'\')">'+(seen?'取消看過標記':'標記為看過')+'</button> <button class="btn ghost" onclick="document.getElementById(\'detail\').style.display=\'none\'">收起</button>';
+  el.innerHTML='<h2>'+esc(d.t)+'</h2><p><span class="badge">'+d.c+'</span>'+esc(d.ch)+'｜'+d.v+' 觀看｜日均約 '+fmtVpd(vpd(d))+'｜片長 '+d.d+'｜'+d.pub+'上架 '+(d.eps?('｜共 '+d.eps+' 集（合集版，一支影片一次看完）'):'｜合集版')+'</p><p>'+esc(d.desc)+'</p><a class="btn" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">▶ 到 YouTube 看</a><p class="note">點上面按鈕會跳到 YouTube App 或網頁播放；這是合集版影片，集數以影片內的章節為準。</p><button class="btn ghost" onclick="toggleSeen(\''+d.id+'\')">'+(seen?'取消看過標記':'標記為看過')+'</button> <button class="btn ghost" onclick="document.getElementById(\'detail\').style.display=\'none\'">收起</button>';
   el.scrollIntoView({behavior:"smooth"});
   render();
 }
@@ -149,6 +159,7 @@ function toggleSeen(id){
 }
 document.getElementById("q").addEventListener("input",render);
 document.getElementById("sort").addEventListener("change",render);
+document.getElementById("month").addEventListener("change",render);
 renderChips();render();
 </script>
 </body>
