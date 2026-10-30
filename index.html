@@ -663,7 +663,7 @@ if (!POPUP_ENABLED) return;
 try {
   if (localStorage.getItem('aidrama_subscribed')) return;
   var d = localStorage.getItem('aidrama_sub_popup_dismissed');
-  if (d && Date.now() - Number(d) < 7 * 24 * 3600 * 1000) return;
+  if (d && Date.now() - Number(d) < 24 * 3600 * 1000) return;
 } catch (e) {}
 var overlay = document.getElementById('sub-popup-overlay');
 function close(dismiss) {
