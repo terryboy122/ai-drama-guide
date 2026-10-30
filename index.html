@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI劇場｜最熱門 AI 短劇，一次找到想看的劇</title>
+<meta name="description" content="AI劇場：搜集 YouTube 上最熱門的 AI 短劇，依分類、熱門度快速找到想看的劇，點卡片就能看全集，附來源頻道連結。">
+<link rel="canonical" href="https://ai-drama-guide.pages.dev/">
+<meta name="robots" content="index, follow">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#17131f;color:#f2eefb;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft Jhenghua","Noto Sans TC",sans-serif;font-size:17px;line-height:1.7}
+a{color:#f5c86b}
+.hero{background:linear-gradient(160deg,#2a1230,#17131f 70%);padding:44px 20px 28px}
+.hero-inner{max-width:980px;margin:0 auto}
+.kicker{font-size:14px;letter-spacing:2px;color:#e8b54d;margin:0 0 10px}
+.hero h1{font-size:36px;line-height:1.3;margin:0 0 10px}
+.hero p{font-size:18px;color:#cfc5e8;margin:0}
+.bar{position:sticky;top:0;z-index:10;background:#17131f;border-bottom:1px solid #2e2547;padding:12px 20px}
+.bar-inner{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.bar input{flex:1;min-width:200px;padding:11px 16px;border-radius:999px;border:1px solid #3a2f5c;background:#241e33;color:#f2eefb;font-size:16px}
+.bar select{padding:11px 12px;border-radius:999px;border:1px solid #3a2f5c;background:#241e33;color:#f2eefb;font-size:15px}
+.chips{max-width:980px;margin:0 auto;padding:12px 20px 4px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid #3a2f5c;background:#241e33;color:#e6defa;border-radius:999px;padding:7px 15px;font-size:15px;cursor:pointer}
+.chip.on{background:#e8b54d;border-color:#e8b54d;color:#241a08;font-weight:700}
+.wrap{max-width:980px;margin:0 auto;padding:8px 20px 48px}
+.count{color:#a99fc0;font-size:15px;margin:10px 0}
+.continue{background:#2a2140;border:1px solid #e8b54d;border-radius:16px;padding:16px 20px;margin:16px 0;display:none}
+.continue b{color:#f5c86b}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#241e33;border:1px solid #332a4d;border-radius:16px;overflow:hidden;cursor:pointer;text-align:left;color:inherit;font:inherit;padding:0}
+.card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.card-body{padding:14px 16px}
+.card-body h3{font-size:18px;line-height:1.45;margin:0 0 6px}
+.card-body p{font-size:15px;color:#b9add6;margin:4px 0}
+.badge{display:inline-block;background:#e8b54d;color:#241a08;border-radius:999px;padding:1px 10px;font-size:14px;font-weight:700;margin-right:6px}
+.seen{display:inline-block;color:#8fe3a8;font-size:14px}
+.detail{display:none;background:#241e33;border:1px solid #e8b54d;border-radius:16px;padding:20px;margin:16px 0}
+.detail h2{font-size:23px;margin:0 0 8px}
+.player{position:relative;width:100%;aspect-ratio:16/9;margin:12px 0}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:12px}
+.btn{display:inline-block;background:#e8b54d;color:#241a08;border:0;border-radius:999px;padding:10px 22px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;margin:6px 8px 6px 0}
+.btn.ghost{background:transparent;color:#f5c86b;border:1px solid #e8b54d}
+.note{color:#a99fc0;font-size:15px}
+.footer{color:#8d84a8;font-size:15px;text-align:center;padding:0 20px 40px}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:29px}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">AI DRAMA GUIDE</p>
+    <h1>AI劇場</h1>
+    <p>最熱門的 AI 短劇都在這裡。搜一下、選個分類，點卡片就能看。</p>
+  </div>
+</header>
+<div class="bar">
+  <div class="bar-inner">
+    <input id="q" type="search" placeholder="搜劇名、頻道，例如：詭王、萌寶">
+    <select id="sort" aria-label="排序">
+      <option value="hot">最熱門</option>
+      <option value="eps">集數最多</option>
+    </select>
+  </div>
+</div>
+<div class="chips" id="chips"></div>
+<main class="wrap">
+  <div class="continue" id="continue"></div>
+  <section class="detail" id="detail"></section>
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
+  <p class="note">本站只提供連結與 YouTube 官方縮圖，影片本身留在 YouTube 上，版權屬原頻道；連結失效或頻道要求下架，我們會把該劇移除。整理時間：2026-10-30，熱門度以當時觀看數為準。</p>
+</main>
+<footer class="footer"><p>AI劇場｜最熱門 AI 短劇，一次找到想看的劇</p></footer>
+<script>
+var DRAMAS=[
+{id:"K0rfecnCz7s",t:"男友把我從90斤餵到170斤",c:"都市",ch:"歲歲覺醒劇場ShortTV",v:"55.5 萬",vn:555000,d:"1:05:45",eps:0,desc:"以為他喜歡胖胖的自己，卻撞破他為送青梅上位而算計她。"},
+{id:"ITV2Oz6VzoA",t:"我今年18，女兒19",c:"家庭",ch:"KK爱看",v:"33.9 萬",vn:339000,d:"2:42:13",eps:156,desc:"18歲少年被19歲女孩喊爸，得知真相後全家聯手改寫命運。"},
+{id:"BEEJ7n_u-Ak",t:"全球詭異降臨，我的老爹是詭王",c:"玄幻",ch:"KK爱看",v:"33.3 萬",vn:333000,d:"2:06:09",eps:116,desc:"高階詭異見她就怕，她的真實身分究竟是什麼。"},
+{id:"fCpi4zFHpN8",t:"我靠現代美食在古代發家致富",c:"古裝",ch:"红果短剧圈",v:"26.5 萬",vn:265000,d:"2:05:45",eps:0,desc:"現代廚神穿越古代，麻辣燙饞哭古人。"},
+{id:"pJp6Lf1QG5I",t:"重生六零：帶著姐妹進山躲饑荒",c:"重生",ch:"KK爱看",v:"13 萬",vn:130000,d:"1:15:20",eps:98,desc:"重生攜空間進山求生，帶姐妹逆襲成全村依靠。"},
+{id:"C5n32-Ca28k",t:"村長，這媳婦可是你讓我娶的",c:"古裝",ch:"KK爱看",v:"12.6 萬",vn:126000,d:"1:12:42",eps:60,desc:"重生歸來先娶村長安排的媳婦，轉眼讓仇人自食惡果。"},
+{id:"slrv-T3lUb4",t:"穿成惡毒前妻，我靠鹵肉爆賺",c:"古裝",ch:"KK爱看",v:"11.3 萬",vn:113000,d:"10:22:50",eps:639,desc:"惡毒前妻主動和離後，靠一鍋鹵肉逆襲翻身，全劇完結篇。"},
+{id:"Z4RkXnhzv98",t:"票是舊的帳是真的",c:"重生",ch:"KK爱看",v:"6.3 萬",vn:63000,d:"1:11:51",eps:94,desc:"中獎八千萬卻淨身出戶？她早留了一手。"},
+{id:"cIlMh2po-Rs",t:"萌寶降世：錦鯉小福星旺爆帥府",c:"家庭",ch:"KK爱看",v:"5 萬",vn:50000,d:"2:07:22",eps:138,desc:"被全家嫌棄的小奶團，竟讓傅家所有人重拾笑容。"},
+{id:"N7gfEv2Y3wI",t:"那妖魔是我老婆！",c:"玄幻",ch:"KK爱看",v:"2.8 萬",vn:28000,d:"2:00:48",eps:153,desc:"我死後成妖潛入陳家，竟發現老婆等了我三千年。"},
+{id:"2ZotpmR8NSU",t:"鎮國公她手握兵權回京了",c:"古裝",ch:"KK爱看",v:"2.7 萬",vn:27000,d:"4:09:20",eps:279,desc:"戰功赫赫的長姐回京，鳩占鵲巢的人要付出代價。"},
+{id:"HHjgd8DoGPk",t:"京婚越界，宗少請自重",c:"豪門",ch:"KK爱看",v:"2.7 萬",vn:27000,d:"2:19:40",eps:130,desc:"聯姻名單突生變數，他偏偏選中最受欺負的她。"},
+{id:"Yel4mm_wfsg",t:"6塊6到帳那天，我退了6萬6",c:"重生",ch:"KK爱看",v:"2.4 萬",vn:24000,d:"2:28:42",eps:104,desc:"6塊6隨禮換來淨身出戶，他的豪門美夢徹底碎了。"},
+{id:"KxnTfdiXk1M",t:"女主讓讓，我的小青梅來接我了",c:"都市",ch:"KK爱看",v:"2 萬",vn:20000,d:"2:20:54",eps:101,desc:"穿成冤種男配後，他拒絕當舔狗，聯手青梅逆襲翻盤。"},
+{id:"1o2x8b7m4o8",t:"遇棠方知涉：被偏執大佬黏上了3",c:"豪門",ch:"KK爱看",v:"1.5 萬",vn:15000,d:"2:12:02",eps:99,desc:"當命運寫死結局，他們偏要改寫人生。"},
+{id:"hwESTJCr70s",t:"冷情薄總步步淪陷",c:"豪門",ch:"KK爱看",v:"7502",vn:7502,d:"5:04:00",eps:300,desc:"新郎婚禮缺席，她遠赴米蘭後竟讓冷情總裁步步淪陷。"},
+{id:"9i7UKNfvVBI",t:"御獸時代",c:"玄幻",ch:"KK爱看",v:"6790",vn:6790,d:"4:32:31",eps:220,desc:"眾人笑他天賦墊底，直到他放出華夏神獸震驚全場。"},
+{id:"xtnV-0PUtw8",t:"暗權女×富商千金",c:"古裝",ch:"蓝阙凝光漫剧阁",v:"3431",vn:3431,d:"1:07:01",eps:0,desc:"碼頭初遇一見傾心，古風雙女主爆款短劇。"}
+];
+var CATS=["全部","古裝","重生","豪門","家庭","玄幻","都市"];
+var cat="全部";
+function getWatched(){try{return JSON.parse(localStorage.getItem("aidrama_watched")||"[]")}catch(e){return[]}}
+function setWatched(a){localStorage.setItem("aidrama_watched",JSON.stringify(a))}
+function thumb(id){return "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg"}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function renderChips(){
+  document.getElementById("chips").innerHTML=CATS.map(function(c){
+    return '<button class="chip'+(c===cat?' on':'')+'" data-c="'+c+'">'+c+'</button>';
+  }).join("");
+  document.querySelectorAll(".chip").forEach(function(b){
+    b.addEventListener("click",function(){cat=b.dataset.c;renderChips();render();});
+  });
+}
+function render(){
+  var q=(document.getElementById("q").value||"").trim();
+  var list=DRAMAS.filter(function(d){
+    return (cat==="全部"||d.c===cat)&&(!q||(d.t+d.ch+d.desc).indexOf(q)>=0);
+  });
+  var sort=document.getElementById("sort").value;
+  if(sort==="hot")list.sort(function(a,b){return b.vn-a.vn});
+  else list.sort(function(a,b){return (b.eps||0)-(a.eps||0)});
+  var watched=getWatched();
+  document.getElementById("count").textContent="共 "+list.length+" 部";
+  var last=localStorage.getItem("aidrama_last");
+  var cont=document.getElementById("continue");
+  if(last){
+    var ld=null;DRAMAS.forEach(function(d){if(d.id===last)ld=d});
+    if(ld){cont.style.display="block";cont.innerHTML="繼續看：<b>"+esc(ld.t)+"</b> <button class=\"btn\" onclick=\"openDrama('"+ld.id+"')\">繼續播放</button>";}
+    else cont.style.display="none";
+  } else cont.style.display="none";
+  document.getElementById("grid").innerHTML=list.map(function(d){
+    var seen=watched.indexOf(d.id)>=0;
+    return '<button class="card" onclick="openDrama(\''+d.id+'\')"><img src="'+thumb(d.id)+'" alt="" loading="lazy"><div class="card-body"><h3>'+esc(d.t)+'</h3><p><span class="badge">'+d.c+'</span>'+(d.eps?("共 "+d.eps+" 集（合集版）"):"合集版")+'｜片長 '+d.d+'</p><p>'+esc(d.desc)+'</p><p>'+esc(d.ch)+'｜'+d.v+' 觀看 '+(seen?'<span class="seen">✓ 看過</span>':'')+'</p></div></button>';
+  }).join("")||"<p>沒有找到符合的劇，換個關鍵字試試。</p>";
+}
+function openDrama(id){
+  var d=null;DRAMAS.forEach(function(x){if(x.id===id)d=x});
+  if(!d)return;
+  localStorage.setItem("aidrama_last",id);
+  var watched=getWatched();var seen=watched.indexOf(id)>=0;
+  var el=document.getElementById("detail");
+  el.style.display="block";
+  el.innerHTML='<h2>'+esc(d.t)+'</h2><p><span class="badge">'+d.c+'</span>'+esc(d.ch)+'｜'+d.v+' 觀看｜片長 '+d.d+' '+(d.eps?('｜共 '+d.eps+' 集（合集版，一支影片一次看完）'):'｜合集版')+'</p><p>'+esc(d.desc)+'</p><div class="player"><iframe src="https://www.youtube.com/embed/'+d.id+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><p class="note">這是合集版影片，集數以影片內的章節為準；想分集追的話，到 YouTube 頻道找單集。</p><button class="btn" onclick="toggleSeen(\''+d.id+'\')">'+(seen?'取消看過標記':'標記為看過')+'</button><a class="btn ghost" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">到 YouTube 看</a> <button class="btn ghost" onclick="document.getElementById(\'detail\').style.display=\'none\'">收起</button>';
+  el.scrollIntoView({behavior:"smooth"});
+  render();
+}
+function toggleSeen(id){
+  var w=getWatched();var i=w.indexOf(id);
+  if(i>=0)w.splice(i,1);else w.push(id);
+  setWatched(w);openDrama(id);
+}
+document.getElementById("q").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
+renderChips();render();
+</script>
+</body>
+</html>
