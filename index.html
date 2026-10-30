@@ -306,6 +306,7 @@ btn.disabled=true;st.textContent='處理中…';
 try{
 var r=await fetch('/api/cancel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tradeNo:trade,card4:card4})});
 var d=await r.json();st.textContent=d.message||'處理完成。';
+if(d.ok){try{localStorage.removeItem('aidrama_subscribed');localStorage.setItem('aidrama_sub_popup_dismissed',String(Date.now()));}catch(err){}}
 }catch(err){st.textContent='取消失敗，請稍後再試或透過留言板聯絡站主。';}
 btn.disabled=false;
 });
@@ -632,6 +633,57 @@ document.getElementById("board-form").addEventListener("submit",async function(e
     else st.textContent="送出失敗，請檢查內容後再試一次。";
   }catch(err){st.textContent="送出失敗，請檢查網路後再試一次。";}
 });
+</script>
+<style>
+#sub-popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;align-items:center;justify-content:center;padding:20px}
+#sub-popup-overlay.show{display:flex}
+#sub-popup{position:relative;background:#241e33;border:1px solid #3a3050;border-radius:16px;max-width:360px;width:100%;padding:28px 24px 20px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#sub-popup h3{color:#f5c86b;margin:0 0 10px}
+#sub-popup p{color:#e6eefc;line-height:1.7;margin:0 0 16px}
+#sub-popup .btn{display:block;width:100%;margin-bottom:8px}
+#sub-popup .link-btn{background:none;border:none;color:#b9c4d8;cursor:pointer;padding:8px;font-size:14px}
+#sub-popup-x{position:absolute;top:8px;right:12px;background:none;border:none;color:#b9c4d8;font-size:22px;cursor:pointer;line-height:1}
+</style>
+<div id="sub-popup-overlay" role="dialog" aria-label="贊助訂閱">
+<div id="sub-popup">
+<button id="sub-popup-x" aria-label="關閉">×</button>
+<h3>喜歡 AI劇場嗎？</h3>
+<p>每月 39 元支持本站繼續整理熱門 AI 劇，內容維持免費公開。</p>
+<button class="btn" id="sub-popup-go" type="button">每月 39 元支持</button>
+<button class="link-btn" id="sub-popup-subscribed" type="button">我已訂閱，不再顯示</button>
+<button class="link-btn" id="sub-popup-later" type="button">先逛逛</button>
+</div>
+</div>
+<script>
+(function(){
+// 訂閱彈出視窗：正式上線時把 POPUP_ENABLED 改為 true 才會顯示。
+// 目前為 false，程式先上線、視窗保持關閉，不會打擾訪客。
+var POPUP_ENABLED = false;
+if (!POPUP_ENABLED) return;
+try {
+  if (localStorage.getItem('aidrama_subscribed')) return;
+  var d = localStorage.getItem('aidrama_sub_popup_dismissed');
+  if (d && Date.now() - Number(d) < 7 * 24 * 3600 * 1000) return;
+} catch (e) {}
+var overlay = document.getElementById('sub-popup-overlay');
+function close(dismiss) {
+  overlay.classList.remove('show');
+  if (dismiss) { try { localStorage.setItem('aidrama_sub_popup_dismissed', String(Date.now())); } catch (e) {} }
+}
+function subscribed() {
+  try { localStorage.setItem('aidrama_subscribed', '1'); } catch (e) {}
+  overlay.classList.remove('show');
+}
+setTimeout(function() { overlay.classList.add('show'); }, 3000);
+document.getElementById('sub-popup-go').addEventListener('click', function() {
+  close(false);
+  document.getElementById('subscribe').scrollIntoView({behavior: 'smooth'});
+});
+document.getElementById('sub-popup-subscribed').addEventListener('click', subscribed);
+document.getElementById('sub-popup-later').addEventListener('click', function() { close(true); });
+document.getElementById('sub-popup-x').addEventListener('click', function() { close(true); });
+overlay.addEventListener('click', function(e) { if (e.target === overlay) close(true); });
+})();
 </script>
 </body>
 </html>

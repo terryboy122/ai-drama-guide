@@ -37,7 +37,8 @@ export async function onRequestPost(context) {
       return page(
         '訂閱成功，謝謝你的支持！',
         '<p>每月 39 元的贊助訂閱已成立，之後每月會自動扣款。</p>' +
-          '<p>訂單編號：<b>' + escHtml(tradeNo) + '</b>（想取消訂閱時，請到首頁贊助訂閱區填寫此編號與信用卡末四碼自助取消，或透過留言板聯絡站主；取消後無法恢復、需重新訂閱才會再扣款，下個月起不再扣款。）</p>'
+          '<p>訂單編號：<b>' + escHtml(tradeNo) + '</b>（想取消訂閱時，請到首頁贊助訂閱區填寫此編號與信用卡末四碼自助取消，或透過留言板聯絡站主；取消後無法恢復、需重新訂閱才會再扣款，下個月起不再扣款。）</p>' +
+          '<script>try{localStorage.setItem("aidrama_subscribed","1");}catch(e){}</script>'
       );
     }
     return page(
