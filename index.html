@@ -232,29 +232,35 @@ function render(){
     var s0=g.seasons[0];
     var meta=g.seasons.length>1?("共 "+g.seasons.length+" 季｜合計 "+fmtViews(g.sumVn)+" 觀看"):((s0.eps?("共 "+s0.eps+" 集（合集版）"):"合集版")+"｜片長 "+s0.d+"｜"+s0.pub.slice(0,7)+"上架");
     var chTxt=g.seasons.length>1?esc(g.best.ch)+" 等":esc(g.best.ch);
-    return '<button class="card" onclick="openGroup(\''+g.key+'\')"><img src="'+thumb(g.best.id)+'" alt="" loading="lazy"><div class="card-body"><h3>'+esc(g.title)+'</h3><p><span class="badge">'+g.c+'</span>'+meta+'</p><p>'+esc(g.desc)+'</p><p>'+chTxt+'｜'+fmtViews(g.sumVn)+' 觀看｜日均約 '+fmtVpd(g.maxVpd)+' '+seenTxt+'</p></div></button>';
+    return '<button class="card" onclick="openGroup(\''+g.key+'\',this)"><img src="'+thumb(g.best.id)+'" alt="" loading="lazy"><div class="card-body"><h3>'+esc(g.title)+'</h3><p><span class="badge">'+g.c+'</span>'+meta+'</p><p>'+esc(g.desc)+'</p><p>'+chTxt+'｜'+fmtViews(g.sumVn)+' 觀看｜日均約 '+fmtVpd(g.maxVpd)+' '+seenTxt+'</p></div></button>';
   }).join("")||"<p>沒有找到符合的劇，換個關鍵字試試。</p>";
 }
-function openGroup(key){
+var lastY=0;
+function openGroup(key,btn){
   var g=null;groups().forEach(function(x){if(x.key===key)g=x});
   if(!g)return;
   var watched=getWatched();
+  if(btn)lastY=window.scrollY;
   var el=document.getElementById("detail");
   el.style.display="block";
   if(g.seasons.length===1){
     var d=g.seasons[0];
     localStorage.setItem("aidrama_last",d.id);
     var seen=watched.indexOf(d.id)>=0;
-    el.innerHTML='<h2>'+esc(d.t)+'</h2><p><span class="badge">'+d.c+'</span>'+esc(d.ch)+'｜'+d.v+' 觀看｜日均約 '+fmtVpd(vpd(d))+'｜片長 '+d.d+'｜'+d.pub+'上架 '+(d.eps?('｜共 '+d.eps+' 集（合集版，一支影片一次看完）'):'｜合集版')+'</p><p>'+esc(d.desc)+'</p><a class="btn" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">▶ 到 YouTube 看</a><p class="note">點上面按鈕會跳到 YouTube App 或網頁播放；這是合集版影片，集數以影片內的章節為準。</p><button class="'+(seen?'btn seen-btn':'btn ghost')+'" onclick="toggleSeen(\''+d.id+'\',\''+g.key+'\')">'+(seen?'✓ 已看過（點一下取消）':'標記為看過')+'</button> <button class="btn ghost" onclick="document.getElementById(\'detail\').style.display=\'none\'">收起</button>';
+    el.innerHTML='<h2>'+esc(d.t)+'</h2><p><span class="badge">'+d.c+'</span>'+esc(d.ch)+'｜'+d.v+' 觀看｜日均約 '+fmtVpd(vpd(d))+'｜片長 '+d.d+'｜'+d.pub+'上架 '+(d.eps?('｜共 '+d.eps+' 集（合集版，一支影片一次看完）'):'｜合集版')+'</p><p>'+esc(d.desc)+'</p><a class="btn" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">▶ 到 YouTube 看</a><p class="note">點上面按鈕會跳到 YouTube App 或網頁播放；這是合集版影片，集數以影片內的章節為準。</p><button class="'+(seen?'btn seen-btn':'btn ghost')+'" onclick="toggleSeen(\''+d.id+'\',\''+g.key+'\')">'+(seen?'✓ 已看過（點一下取消）':'標記為看過')+'</button> <button class="btn ghost" onclick="closeDetail()">收起</button>';
   } else {
     var rows=g.seasons.map(function(d){
       var seen=watched.indexOf(d.id)>=0;
       return '<div style="border-top:1px solid #332a4d;padding:12px 0"><b>'+esc(d.season||d.t)+'</b>：'+esc(d.t)+'<br>'+esc(d.ch)+'｜'+d.v+' 觀看｜'+d.pub+'上架｜片長 '+d.d+' '+(seen?'<span class="seen">✓ 看過</span>':'')+'<br><a class="btn" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">到 YouTube 看</a> <button class="'+(seen?'btn seen-btn':'btn ghost')+'" onclick="toggleSeen(\''+d.id+'\',\''+g.key+'\')">'+(seen?'✓ 已看過（點一下取消）':'標記看過')+'</button></div>';
     }).join("");
-    el.innerHTML='<h2>'+esc(g.title)+'</h2><p><span class="badge">'+g.c+'</span>共 '+g.seasons.length+' 季｜合計 '+fmtViews(g.sumVn)+' 觀看</p><p>'+esc(g.desc)+'</p>'+rows+'<button class="btn ghost" onclick="document.getElementById(\'detail\').style.display=\'none\'">收起</button>';
+    el.innerHTML='<h2>'+esc(g.title)+'</h2><p><span class="badge">'+g.c+'</span>共 '+g.seasons.length+' 季｜合計 '+fmtViews(g.sumVn)+' 觀看</p><p>'+esc(g.desc)+'</p>'+rows+'<button class="btn ghost" onclick="closeDetail()">收起</button>';
   }
   el.scrollIntoView({behavior:"smooth"});
   render();
+}
+function closeDetail(){
+  document.getElementById("detail").style.display="none";
+  window.scrollTo(0,lastY);
 }
 function toggleSeen(id,key){
   var w=getWatched();var i=w.indexOf(id);
