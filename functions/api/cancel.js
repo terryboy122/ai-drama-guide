@@ -95,7 +95,7 @@ export async function onRequestPost(context) {
     await env.DB.prepare('UPDATE subscriptions SET status=?, updated_at=? WHERE merchant_trade_no=?')
       .bind('cancelled', Date.now(), tradeNo)
       .run();
-    return json({ ok: true, message: '已取消訂閱，下個月起不再扣款。謝謝你曾經的支持；若想恢復支持，請重新訂閱。' });
+    return json({ ok: true, message: '已取消訂閱，下個週期起不再扣款。謝謝你曾經的支持；若想恢復支持，請重新訂閱。' });
   } catch (e) {
     return json({ ok: false, message: '取消失敗，請稍後再試或透過留言板聯絡站主。' }, 500);
   }

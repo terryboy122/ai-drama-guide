@@ -1,5 +1,6 @@
 // Create an ECPay credit-card periodic (subscription) order for the
-// ai-drama-guide site: NT$39/month, auto-charged by ECPay.
+// ai-drama-guide site: NT$39/month or NT$390/year, auto-charged by
+// ECPay. Plan comes from ?plan=monthly (default) or ?plan=yearly.
 // GET and POST both return an auto-submit form to ECPay's checkout
 // page (GET exists so the flow can be tested directly in a browser).
 // The public subscribe button stays disabled until production keys
@@ -11,6 +12,11 @@
 import { checkMacValue, escHtml, SUBSCRIPTIONS_DDL } from './ecpay/_common.js';
 
 const SITE = 'https://ai-drama-guide.pages.dev';
+
+const PLANS = {
+  monthly: { amount: 39, periodType: 'M', item: 'AI劇場贊助訂閱每月39元', cycle: '每月' },
+  yearly: { amount: 390, periodType: 'Y', item: 'AI劇場贊助訂閱每年390元', cycle: '每年' },
+};
 
 function taipeiNow() {
   const d = new Date(Date.now() + 8 * 3600 * 1000);
@@ -31,7 +37,9 @@ function taipeiDigits() {
 }
 
 export async function onRequest(context) {
-  const { env } = context;
+  const { request, env } = context;
+  const planKey = new URL(request.url).searchParams.get('plan') === 'yearly' ? 'yearly' : 'monthly';
+  const plan = PLANS[planKey];
   const mid = env.ECPAY_MERCHANT_ID;
   const hk = env.ECPAY_HASH_KEY;
   const hiv = env.ECPAY_HASH_IV;
@@ -51,16 +59,16 @@ export async function onRequest(context) {
     MerchantTradeNo: tradeNo,
     MerchantTradeDate: taipeiNow(),
     PaymentType: 'aio',
-    TotalAmount: '39',
+    TotalAmount: String(plan.amount),
     TradeDesc: 'AI劇場贊助訂閱',
-    ItemName: 'AI劇場贊助訂閱每月39元',
+    ItemName: plan.item,
     ReturnURL: SITE + '/api/ecpay/notify',
     OrderResultURL: SITE + '/api/ecpay/result',
     ClientBackURL: SITE + '/',
     ChoosePayment: 'Credit',
     EncryptType: '1',
-    PeriodAmount: '39',
-    PeriodType: 'M',
+    PeriodAmount: String(plan.amount),
+    PeriodType: plan.periodType,
     Frequency: '1',
     ExecTimes: '999',
     PeriodReturnURL: SITE + '/api/ecpay/period',
@@ -72,9 +80,9 @@ export async function onRequest(context) {
   try {
     await env.DB.prepare(SUBSCRIPTIONS_DDL).run();
     await env.DB.prepare(
-      'INSERT INTO subscriptions (merchant_trade_no, status, amount, created_at, updated_at) VALUES (?, ?, ?, ?, ?)'
+      'INSERT INTO subscriptions (merchant_trade_no, status, amount, period_type, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
     )
-      .bind(tradeNo, 'pending', 39, Date.now(), Date.now())
+      .bind(tradeNo, 'pending', plan.amount, plan.periodType, Date.now(), Date.now())
       .run();
   } catch (e) {
     return new Response('訂單建立失敗', { status: 500 });

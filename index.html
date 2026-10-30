@@ -279,11 +279,27 @@ a{color:#f5c86b}
 </section>
 <section class="board" id="subscribe">
 <h2>贊助訂閱</h2>
-<p>每月 39 元，支持本站繼續蒐集整理熱門 AI 劇。</p>
+<p>每月 39 元或每年 390 元，支持本站繼續蒐集整理熱門 AI 劇。</p>
 <p>本訂閱為純支持，站上內容維持免費公開，訂閱者目前沒有專屬內容，日後若有新增會再公告。</p>
-<p>付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；隨時可取消，取消後下個月起不再扣款。取消方式：下方表單輸入訂單編號與信用卡末四碼即可自助取消（取消後無法恢復，想繼續支持需重新訂閱），或透過<a href="#board" style="color:#f5c86b">留言板</a>聯絡站主。</p>
-<p><button class="btn" type="button" disabled>即將開放（綠界帳號設定中）</button></p>
-<p class="note">正式開放後，按下按鈕會前往綠界刷卡授權頁完成第一期付款，之後每月自動扣款 39 元。</p>
+<p>付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；隨時可取消，取消後下個週期起不再扣款。取消方式：下方表單輸入訂單編號與信用卡末四碼即可自助取消（取消後無法恢復，想繼續支持需重新訂閱），或透過<a href="#board" style="color:#f5c86b">留言板</a>聯絡站主。</p>
+<div style="margin-bottom:12px"><label for="plan-select">訂閱方案</label><select id="plan-select"><option value="monthly">每月 39 元</option><option value="yearly">每年 390 元（省兩個月）</option></select></div>
+<p><button class="btn" id="subscribe-btn" type="button" disabled>即將開放（綠界帳號設定中）</button></p>
+<p class="note">正式開放後，按下按鈕會前往綠界刷卡授權頁完成第一期付款，之後按你選擇的週期自動扣款。</p>
+<script>
+(function(){
+var b=document.getElementById('subscribe-btn');if(!b)return;
+b.addEventListener('click',function(){
+var plan=document.getElementById('plan-select').value;
+location.href='/api/subscribe?plan='+encodeURIComponent(plan);
+});
+})();
+</script>
+<p><b>常見問題：</b></p>
+<p><b>是不是自動續扣？</b>是，按你選擇的週期自動扣款（每月 39 元或每年 390 元），直到你取消為止。</p>
+<p><b>怎麼取消？</b>下方表單輸入訂單編號與信用卡末四碼自助取消，或透過留言板聯絡站主；取消後下個週期起不再扣款，取消後無法恢復、需重新訂閱。</p>
+<p><b>扣款失敗會怎樣？</b>綠界會自動重試；若連續多次失敗，綠界會自動終止該筆定期扣款，到時需重新訂閱。</p>
+<p><b>需要收據怎麼辦？</b>請透過留言板聯絡站主。</p>
+<p><b>訂閱後內容有什麼不同？</b>沒有不同，站上內容維持免費公開，訂閱是純支持。</p>
 <form id="cancel-form" aria-label="取消訂閱表單" style="margin-top:16px">
 <div style="margin-bottom:12px"><label for="cancel-trade">訂單編號</label><input id="cancel-trade" name="tradeNo" type="text" placeholder="例如：SUB20261030……（共 20 碼）"></div>
 <div style="margin-bottom:12px"><label for="cancel-card4">信用卡末四碼</label><input id="cancel-card4" name="card4" type="text" inputmode="numeric" maxlength="4" placeholder="例如：2222"></div>
@@ -301,13 +317,37 @@ var btn=document.getElementById('cancel-submit');
 var trade=document.getElementById('cancel-trade').value.trim().toUpperCase();
 var card4=document.getElementById('cancel-card4').value.trim();
 if(!/^SUB[0-9A-Z]{17}$/.test(trade)||!/^\d{4}$/.test(card4)){st.textContent='訂單編號或信用卡末四碼格式不正確，請再檢查一次。';return;}
-if(!confirm('確定要取消這筆訂閱嗎？取消後無法恢復，下個月起不再扣款；若想繼續支持，需重新訂閱。'))return;
+if(!confirm('確定要取消這筆訂閱嗎？取消後無法恢復，下個週期起不再扣款；若想繼續支持，需重新訂閱。'))return;
 btn.disabled=true;st.textContent='處理中…';
 try{
 var r=await fetch('/api/cancel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tradeNo:trade,card4:card4})});
 var d=await r.json();st.textContent=d.message||'處理完成。';
 if(d.ok){try{localStorage.removeItem('aidrama_subscribed');localStorage.setItem('aidrama_sub_popup_dismissed',String(Date.now()));}catch(err){}}
 }catch(err){st.textContent='取消失敗，請稍後再試或透過留言板聯絡站主。';}
+btn.disabled=false;
+});
+})();
+</script>
+<form id="status-form" aria-label="查詢訂閱狀態表單" style="margin-top:16px">
+<div style="margin-bottom:12px"><label for="status-trade">訂單編號</label><input id="status-trade" name="tradeNo" type="text" placeholder="例如：SUB20261030……（共 20 碼）"></div>
+<button id="status-submit" class="btn" type="submit">查詢訂閱狀態</button>
+<p class="note" id="status-status"></p>
+<p class="note">只會顯示這筆訂閱的狀態，不會顯示卡號等資料。</p>
+</form>
+<script>
+(function(){
+var f=document.getElementById('status-form');if(!f)return;
+f.addEventListener('submit',async function(e){
+e.preventDefault();
+var st=document.getElementById('status-status');
+var btn=document.getElementById('status-submit');
+var trade=document.getElementById('status-trade').value.trim().toUpperCase();
+if(!/^SUB[0-9A-Z]{17}$/.test(trade)){st.textContent='訂單編號格式不正確，請再檢查一次。';return;}
+btn.disabled=true;st.textContent='查詢中…';
+try{
+var r=await fetch('/api/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tradeNo:trade})});
+var d=await r.json();st.textContent=d.message||'查詢完成。';
+}catch(err){st.textContent='查詢失敗，請稍後再試或透過留言板聯絡站主。';}
 btn.disabled=false;
 });
 })();
