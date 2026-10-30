@@ -48,9 +48,11 @@ a{color:#f5c86b}
 .goods{margin-top:32px}
 .goods h2{font-size:24px;margin:0 0 6px}
 .goods .note{margin-bottom:14px}
-.gcard{background:#241e33;border:1px solid #332a4d;border-radius:16px;padding:18px 20px}
-.gcard h3{font-size:19px;margin:0 0 6px}
-.gcard p{font-size:15px;color:#b9add6;margin:4px 0 12px}
+.gcard{background:#241e33;border:1px solid #332a4d;border-radius:16px;padding:0;overflow:hidden}
+.gcard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.gcard h3{font-size:19px;margin:0;padding:16px 20px 0}
+.gcard p{font-size:15px;color:#b9add6;margin:4px 0 12px;padding:0 20px}
+.gcard .btn{margin:0 20px 18px}
 .footer{color:#8d84a8;font-size:15px;text-align:center;padding:0 20px 40px}
 @media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:29px}}
 @media(max-width:520px){.grid{grid-template-columns:1fr}}
@@ -96,13 +98,13 @@ a{color:#f5c86b}
 <section class="goods" id="goods">
 <h2>看劇好物</h2>
 <p class="note">平板、耳機、手機都挑了幾樣，追劇體驗一次到位。</p>
-<p class="note"><b>分潤揭示：</b>以下連結為蝦皮分潤連結，透過連結購買，站長可獲得分潤，商品價格不變。</p>
+<p class="note"><b>分潤揭示：</b>以下連結為蝦皮分潤連結，透過連結購買，站長可獲得分潤，商品價格不變。圖片取自免費圖庫、僅為示意，實際商品以蝦皮頁面為準。</p>
 <div class="grid">
-<div class="gcard"><h3>Apple iPad 11</h3><p>蘋果平板，追劇用大螢幕看更舒服。價格以蝦皮頁面為準。</p><a class="btn" href="https://s.shopee.tw/2gCJyhWkR1" target="_blank" rel="noopener">到蝦皮買</a></div>
-<div class="gcard"><h3>紅米 Pad 2（11 吋）</h3><p>蝦皮直營，$6,390 起。平價大螢幕，追劇夠用。</p><a class="btn" href="https://s.shopee.tw/1BNWC2Jk3G" target="_blank" rel="noopener">到蝦皮買</a></div>
-<div class="gcard"><h3>Apple iPad Air 11 吋（M4，2026 版）</h3><p>蝦皮直營，$24,900。效能更好，大螢幕追劇更過癮。</p><a class="btn" href="https://s.shopee.tw/5fpvYd1xLT" target="_blank" rel="noopener">到蝦皮買</a></div>
-<div class="gcard"><h3>Apple AirPods 5（第五代無線耳機）</h3><p>蝦皮直營，$4,490 起。降噪無線耳機，晚上追劇不吵人。</p><a class="btn" href="https://s.shopee.tw/gRFbzdQhm" target="_blank" rel="noopener">到蝦皮買</a></div>
-<div class="gcard"><h3>Apple iPhone 18 Pro</h3><p>蝦皮直營，$44,900 起。256G／512G／1T／2T，大螢幕手機追劇也順手。</p><a class="btn" href="https://s.shopee.tw/AUvBKQJiEg" target="_blank" rel="noopener">到蝦皮買</a></div>
+<img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=800&auto=format&fit=crop" alt="Apple iPad 11" loading="lazy"><div class="gcard"><h3>Apple iPad 11</h3><p>蘋果平板，追劇用大螢幕看更舒服。價格以蝦皮頁面為準。</p><a class="btn" href="https://s.shopee.tw/2gCJyhWkR1" target="_blank" rel="noopener">到蝦皮買</a></div>
+<img src="https://images.pexels.com/photos/6337/light-coffee-pen-working.jpg?auto=compress&cs=tinysrgb&w=800" alt="紅米 Pad 2" loading="lazy"><div class="gcard"><h3>紅米 Pad 2（11 吋）</h3><p>蝦皮直營，$6,390 起。平價大螢幕，追劇夠用。</p><a class="btn" href="https://s.shopee.tw/1BNWC2Jk3G" target="_blank" rel="noopener">到蝦皮買</a></div>
+<img src="https://images.unsplash.com/photo-1561154464-82e9adf32764?q=80&w=800&auto=format&fit=crop" alt="Apple iPad Air 11 吋" loading="lazy"><div class="gcard"><h3>Apple iPad Air 11 吋（M4，2026 版）</h3><p>蝦皮直營，$24,900。效能更好，大螢幕追劇更過癮。</p><a class="btn" href="https://s.shopee.tw/5fpvYd1xLT" target="_blank" rel="noopener">到蝦皮買</a></div>
+<img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?q=80&w=800&auto=format&fit=crop" alt="Apple AirPods 5" loading="lazy"><div class="gcard"><h3>Apple AirPods 5（第五代無線耳機）</h3><p>蝦皮直營，$4,490 起。降噪無線耳機，晚上追劇不吵人。</p><a class="btn" href="https://s.shopee.tw/gRFbzdQhm" target="_blank" rel="noopener">到蝦皮買</a></div>
+<img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=800&auto=format&fit=crop" alt="Apple iPhone 18 Pro" loading="lazy"><div class="gcard"><h3>Apple iPhone 18 Pro</h3><p>蝦皮直營，$44,900 起。256G／512G／1T／2T，大螢幕手機追劇也順手。</p><a class="btn" href="https://s.shopee.tw/AUvBKQJiEg" target="_blank" rel="noopener">到蝦皮買</a></div>
 </div>
 </section>
 </main>
