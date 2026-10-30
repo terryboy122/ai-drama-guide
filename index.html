@@ -48,6 +48,11 @@ a{color:#f5c86b}
 .goods{margin-top:32px}
 .goods h2{font-size:24px;margin:0 0 6px}
 .goods .note{margin-bottom:14px}
+#board{scroll-margin-top:70px}
+.board{margin-top:32px}
+.board h2{font-size:24px;margin:0 0 6px}
+.board label{display:block;margin-bottom:6px;font-weight:700}
+.board input,.board textarea{width:100%;box-sizing:border-box;padding:11px 16px;border-radius:14px;border:1px solid #3a2f5c;background:#241e33;color:#f2eefb;font-size:16px}
 .gcard{background:#241e33;border:1px solid #332a4d;border-radius:16px;padding:14px;display:flex;gap:14px;align-items:flex-start}
 .gcard img{width:110px;height:110px;flex:0 0 110px;border-radius:12px;object-fit:cover;display:block}
 .gbody{flex:1;min-width:0}
@@ -65,7 +70,7 @@ a{color:#f5c86b}
     <p class="kicker">AI DRAMA GUIDE</p>
     <h1>AI劇場</h1>
     <p>已經幫您過濾蒐集，最熱門的 AI 劇都在這邊！搜一下、選個分類，點卡片，到 YouTube 看。</p>
-    <p><a class="goods-link" href="#goods">看劇好物 ↓</a></p>
+    <p><a class="goods-link" href="#goods">看劇好物 ↓</a> <a class="goods-link" href="#board">留言板 ↓</a></p>
   </div>
 </header>
 <div class="bar">
@@ -107,6 +112,18 @@ a{color:#f5c86b}
 <div class="gcard"><img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?q=80&w=800&auto=format&fit=crop" alt="Apple AirPods 5" loading="lazy"><div class="gbody"><h3>Apple AirPods 5（第五代無線耳機）</h3><p>蝦皮直營，降噪無線耳機，晚上追劇不吵人。</p><a class="btn" href="https://s.shopee.tw/gRFbzdQhm" target="_blank" rel="noopener">到蝦皮買</a></div></div>
 <div class="gcard"><img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=800&auto=format&fit=crop" alt="Apple iPhone 18 Pro" loading="lazy"><div class="gbody"><h3>Apple iPhone 18 Pro</h3><p>蝦皮直營，256G／512G／1T／2T，大螢幕手機追劇也順手。</p><a class="btn" href="https://s.shopee.tw/AUvBKQJiEg" target="_blank" rel="noopener">到蝦皮買</a></div></div>
 </div>
+</section>
+<section class="board" id="board">
+<h2>留言板</h2>
+<p class="note">想推薦劇、發現連結失效或頁面有錯，都可以在這裡留言。</p>
+<form id="board-form" aria-label="留言板表單">
+<div style="margin-bottom:12px"><label for="board-name">稱呼</label><input id="board-name" name="name" type="text" placeholder="例如：陳先生"></div>
+<div style="margin-bottom:12px"><label for="board-msg">留言內容</label><textarea id="board-msg" name="message" rows="5" placeholder="請寫下你的問題或補充"></textarea></div>
+<div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>請勿填寫<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+<button id="board-submit" class="btn" type="submit">送出留言</button>
+<p class="note" id="board-status"></p>
+<p class="note">留言只會傳給站主，僅供站主回覆使用，不會公開顯示在頁面上，也不會提供給第三方。</p>
+</form>
 </section>
 </main>
 <img src="https://site-stats.terryboy122.workers.dev/t?site=ai-drama-guide" style="display:none" alt="">
@@ -273,6 +290,22 @@ document.getElementById("q").addEventListener("input",render);
 document.getElementById("sort").addEventListener("change",render);
 document.getElementById("month").addEventListener("change",render);
 renderChips();render();
+document.getElementById("board-form").addEventListener("submit",async function(e){
+  e.preventDefault();
+  var st=document.getElementById("board-status");
+  var name=document.getElementById("board-name").value.trim();
+  var message=document.getElementById("board-msg").value.trim();
+  var website=document.querySelector('#board-form input[name="website"]').value;
+  if(!name||!message){st.textContent="請填寫稱呼和留言內容。";return;}
+  st.textContent="傳送中…";
+  try{
+    var r=await fetch("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,message:message,website:website})});
+    var j=await r.json();
+    if(j.ok){st.textContent="留言已送出，謝謝！";document.getElementById("board-form").reset();}
+    else if(j.error==="too_fast")st.textContent="你剛剛才留過言，請隔一分鐘再試。";
+    else st.textContent="送出失敗，請檢查內容後再試一次。";
+  }catch(err){st.textContent="送出失敗，請檢查網路後再試一次。";}
+});
 </script>
 </body>
 </html>
