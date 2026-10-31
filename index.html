@@ -283,12 +283,17 @@ a{color:#f5c86b}
 <p>本訂閱為純支持，站上內容維持免費公開，訂閱者目前沒有專屬內容，日後若有新增會再公告。</p>
 <p>付款由綠界科技處理，卡號等付款資訊不經過本站、本站不儲存；隨時可取消，取消後下個週期起不再扣款。取消方式：下方表單輸入訂單編號與信用卡末四碼即可自助取消（取消後無法恢復，想繼續支持需重新訂閱），或透過<a href="#board" style="color:#f5c86b">留言板</a>聯絡站主。</p>
 <div style="margin-bottom:12px"><label for="plan-select">訂閱方案</label><select id="plan-select" style="font-size:18px"><option value="monthly">每月 NT$39</option><option value="yearly">每年 NT$390（省兩個月）</option></select></div>
+<div style="margin-bottom:12px"><label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input id="subscribe-agree" type="checkbox" style="width:auto;margin-top:4px">我同意按選擇的週期自動續扣（已扣款的期數不退費，取消後下個週期起不再扣款）</label></div>
 <p><button class="btn" id="subscribe-btn" type="button" disabled>即將開放</button></p>
+<p class="note" id="subscribe-agree-status"></p>
 <p class="note">正式開放後，按下按鈕會前往綠界刷卡授權頁完成第一期付款，之後按你選擇的週期自動扣款。</p>
 <script>
 (function(){
 var b=document.getElementById('subscribe-btn');if(!b)return;
 b.addEventListener('click',function(){
+var agree=document.getElementById('subscribe-agree');
+var st=document.getElementById('subscribe-agree-status');
+if(agree&&!agree.checked){if(st)st.textContent='請先勾選同意自動續扣，才能前往付款。';return;}
 var plan=document.getElementById('plan-select').value;
 location.href='/api/subscribe?plan='+encodeURIComponent(plan);
 });
@@ -298,6 +303,7 @@ location.href='/api/subscribe?plan='+encodeURIComponent(plan);
 <p><b>是不是自動續扣？</b>是，按你選擇的週期自動扣款（每月 NT$39 或每年 NT$390），直到你取消為止。</p>
 <p><b>怎麼取消？</b>下方表單輸入訂單編號與信用卡末四碼自助取消，或透過留言板聯絡站主；取消後下個週期起不再扣款，取消後無法恢復、需重新訂閱。</p>
 <p><b>扣款失敗會怎樣？</b>綠界會自動重試；若連續多次失敗，綠界會自動終止該筆定期扣款，到時需重新訂閱。</p>
+<p><b>退費規則是什麼？</b>已扣款的期數不退費；取消訂閱是停掉未來的扣款，取消後下個週期起不再扣款。如需協助，請透過留言板聯絡站主。</p>
 <p><b>需要收據怎麼辦？</b>請透過留言板聯絡站主。</p>
 <p><b>訂閱後內容有什麼不同？</b>沒有不同，站上內容維持免費公開，訂閱是純支持。</p>
 <form id="cancel-form" aria-label="取消訂閱表單" style="margin-top:16px">
