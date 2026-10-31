@@ -300,12 +300,12 @@ location.href='/api/subscribe?plan='+encodeURIComponent(plan);
 })();
 </script>
 <p><b>常見問題：</b></p>
-<p><b>是不是自動續扣？</b>是，按你選擇的週期自動扣款（每月 NT$39 或每年 NT$390），直到你取消為止。</p>
-<p><b>怎麼取消？</b>下方表單輸入訂單編號與信用卡末四碼自助取消，或透過留言板聯絡站主；取消後下個週期起不再扣款，取消後無法恢復、需重新訂閱。</p>
-<p><b>扣款失敗會怎樣？</b>綠界會自動重試；若連續多次失敗，綠界會自動終止該筆定期扣款，到時需重新訂閱。</p>
-<p><b>退費規則是什麼？</b>已扣款的期數不退費；取消訂閱是停掉未來的扣款，取消後下個週期起不再扣款。如需協助，請透過留言板聯絡站主。</p>
-<p><b>需要收據怎麼辦？</b>請透過留言板聯絡站主。</p>
-<p><b>訂閱後內容有什麼不同？</b>沒有不同，站上內容維持免費公開，訂閱是純支持。</p>
+<details style="margin-bottom:10px"><summary style="cursor:pointer"><b>是不是自動續扣？</b></summary><p style="margin:8px 0 0">是，按你選擇的週期自動扣款（每月 NT$39 或每年 NT$390），直到你取消為止。</p></details>
+<details style="margin-bottom:10px"><summary style="cursor:pointer"><b>怎麼取消？</b></summary><p style="margin:8px 0 0">下方表單輸入訂單編號與信用卡末四碼自助取消，或透過留言板聯絡站主；取消後下個週期起不再扣款，取消後無法恢復、需重新訂閱。</p></details>
+<details style="margin-bottom:10px"><summary style="cursor:pointer"><b>扣款失敗會怎樣？</b></summary><p style="margin:8px 0 0">綠界會自動重試；若連續多次失敗，綠界會自動終止該筆定期扣款，到時需重新訂閱。</p></details>
+<details style="margin-bottom:10px"><summary style="cursor:pointer"><b>退費規則是什麼？</b></summary><p style="margin:8px 0 0">已扣款的期數不退費；取消訂閱是停掉未來的扣款，取消後下個週期起不再扣款。如需協助，請透過留言板聯絡站主。</p></details>
+<details style="margin-bottom:10px"><summary style="cursor:pointer"><b>需要收據怎麼辦？</b></summary><p style="margin:8px 0 0">目前綠界不會自動開立收據或發票；如需收據，請透過留言板聯絡站主。</p></details>
+<details style="margin-bottom:10px"><summary style="cursor:pointer"><b>訂閱後內容有什麼不同？</b></summary><p style="margin:8px 0 0">沒有不同，站上內容維持免費公開，訂閱是純支持。</p></details>
 <form id="cancel-form" aria-label="取消訂閱表單" style="margin-top:16px">
 <div style="margin-bottom:12px"><label for="cancel-trade">訂單編號</label><input id="cancel-trade" name="tradeNo" type="text" placeholder="例如：SUB20261030……（共 20 碼）"></div>
 <div style="margin-bottom:12px"><label for="cancel-card4">信用卡末四碼</label><input id="cancel-card4" name="card4" type="text" inputmode="numeric" maxlength="4" placeholder="例如：2222"></div>
