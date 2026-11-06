@@ -1135,7 +1135,8 @@ function groups(){
   });
   order.forEach(function(g){
     g.seasons.sort(function(a,b){return (a.ord||0)-(b.ord||0)});
-    if(g.seasons.length>1)g.desc=g.seasons[0].desc;
+    g.seasonCount=g.seasons.filter(function(d){return d.season!=='合集'}).length||g.seasons.length;
+    if(g.seasons.length>1){var fr=g.seasons.filter(function(d){return d.season!=='合集'});g.desc=(fr[0]||g.seasons[0]).desc;}
     g.maxVn=Math.max.apply(null,g.seasons.map(function(x){return x.vn}));
     g.sumVn=g.seasons.reduce(function(a,x){return a+x.vn},0);
     g.maxVpd=Math.max.apply(null,g.seasons.map(function(x){return vpd(x)}));
@@ -1179,9 +1180,9 @@ function render(){
   } else cont.style.display="none";
   document.getElementById("grid").innerHTML=list.map(function(g){
     var seenCount=g.seasons.filter(function(d){return watched.indexOf(d.id)>=0}).length;
-    var seenTxt=seenCount===0?"":(seenCount===g.seasons.length?'<span class="seen">✓ 全看過</span>':'<span class="seen">已看 '+seenCount+'/'+g.seasons.length+' 季</span>');
+    var seenTxt=seenCount===0?"":(seenCount===g.seasons.length?'<span class="seen">✓ 全看過</span>':'<span class="seen">已看 '+seenCount+'/'+g.seasonCount+' 季</span>');
     var s0=g.seasons[0];
-    var meta=g.seasons.length>1?("共 "+g.seasons.length+" 季｜合計 "+fmtViews(g.sumVn)+" 觀看"):((s0.eps?("共 "+s0.eps+" 集（合集版）"):"合集版")+"｜片長 "+s0.d+"｜"+s0.pub.slice(0,7)+"上架");
+    var meta=g.seasons.length>1?("共 "+g.seasonCount+" 季｜合計 "+fmtViews(g.sumVn)+" 觀看"):((s0.eps?("共 "+s0.eps+" 集（合集版）"):"合集版")+"｜片長 "+s0.d+"｜"+s0.pub.slice(0,7)+"上架");
     var chTxt=g.seasons.length>1?esc(g.best.ch)+" 等":esc(g.best.ch);
     return '<button class="card" onclick="openGroup(\''+g.key+'\',this)"><img src="'+thumb(g.best.id)+'" alt="" loading="lazy"><div class="card-body"><h3>'+esc(g.title)+'</h3><p><span class="badge">'+g.c+'</span>'+meta+'</p><p>'+esc(g.desc)+'</p><p>'+chTxt+'｜'+fmtViews(g.sumVn)+' 觀看｜日均約 '+fmtVpd(g.maxVpd)+' '+seenTxt+'</p></div></button>';
   }).join("")||"<p>沒有找到符合的劇，換個關鍵字試試。</p>";
@@ -1204,7 +1205,7 @@ function openGroup(key,btn){
       var seen=watched.indexOf(d.id)>=0;
       return '<div style="border-top:1px solid #332a4d;padding:12px 0"><b>'+esc(d.season||d.t)+'</b>：'+esc(d.t)+'<br>'+esc(d.ch)+'｜'+d.v+' 觀看｜'+d.pub+'上架｜片長 '+d.d+' '+(seen?'<span class="seen">✓ 看過</span>':'')+'<br><a class="btn" href="https://www.youtube.com/watch?v='+d.id+'" target="_blank" rel="noopener">到 YouTube 看</a> <button class="'+(seen?'btn seen-btn':'btn ghost')+'" onclick="toggleSeen(\''+d.id+'\',\''+g.key+'\')">'+(seen?'✓ 已看過（點一下取消）':'標記看過')+'</button></div>';
     }).join("");
-    el.innerHTML='<h2>'+esc(g.title)+'</h2><p><span class="badge">'+g.c+'</span>共 '+g.seasons.length+' 季｜合計 '+fmtViews(g.sumVn)+' 觀看</p><p>'+esc(g.desc)+'</p>'+rows+'<button class="btn ghost" onclick="closeDetail()">收起</button>';
+    el.innerHTML='<h2>'+esc(g.title)+'</h2><p><span class="badge">'+g.c+'</span>共 '+g.seasonCount+' 季｜合計 '+fmtViews(g.sumVn)+' 觀看</p><p>'+esc(g.desc)+'</p>'+rows+'<button class="btn ghost" onclick="closeDetail()">收起</button>';
   }
   el.scrollIntoView({behavior:"smooth"});
   render();
